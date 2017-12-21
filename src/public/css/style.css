@@ -1,0 +1,60 @@
+body {
+  margin-top: 40px;
+
+
+}
+
+.navbar {
+  box-shadow: 5px 5px 5px #05a2c7;
+  opacity: 0.9;
+  background: #191919; }
+
+  .navbar .nav-item {
+    font-size: 1.1rem;
+    padding-right: 15px; }
+
+@media(max-width: 576px)
+{
+  nav .container{
+    width:100%;
+  }
+}
+
+.heading{
+  margin-top: 120px;
+  text-align: center;
+}
+
+.heading1{
+  color: #000033;
+  font-size: 70px;
+
+}
+
+.heading2{
+  color: #000000;
+
+}
+
+
+
+#about{
+  background-color: rgba(80,189,135,0.0);
+}
+
+.card{
+  margin-top: 130px;
+}
+
+.add-entry{
+  margin-top: 130px;
+}
+
+.down{
+  margin-top: 100px;
+  text-decoration: none;
+}
+
+.down-1{
+  margin-top: 20px;
+}

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Password Wallet|Home</title>
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-auth.js"></script>
+ <script>
+   // Initialize Firebase
+   var config = {
+     apiKey: "AIzaSyBc7zeNZjvJTBirL0km3zkvBIDXjGOzSYk",
+     authDomain: "password-wallet-aut017.firebaseapp.com",
+     databaseURL: "https://password-wallet-aut017.firebaseio.com",
+     projectId: "password-wallet-aut017",
+     storageBucket: "password-wallet-aut017.appspot.com",
+     messagingSenderId: "15909908096"
+   };
+   firebase.initializeApp(config);
+ </script>
+ <script src="js/jquery.min.js"></script>
+ <script src="js/tether.min.js"></script>
+ <script src="js/bootstrap.min.js"></script>
+ <script src="js/navbar-fixed.js"></script>
+
+
+ <script type="text/javascript">
+
+
+   function handleSignUp() {
+     var email = document.getElementById('email').value;
+     var password = document.getElementById('password').value;
+     var password2 = document.getElementById('password2').value;
+     if(email.length<4)
+     {
+       alert("Please enter a valid email.");
+       return;
+     }
+     if(password.length==0)
+     {
+       alert("password field can't be empty.");
+       return;
+     }
+
+     if(password!=password2)
+     {
+       alert("passwords don't match.");
+       return;
+     }
+
+     // Sign in with email and pass.
+     // [START createwithemail]
+     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
+       // Handle Errors here.
+       var errorCode = error.code;
+       var errorMessage = error.message;
+       // [START_EXCLUDE]
+
+         alert(errorMessage);
+
+       console.log(error);
+
+       // [END_EXCLUDE]
+     });
+
+
+     // [END createwithemail]
+ firebase.auth().onAuthStateChanged(user =>{
+  if(user)
+  window.location="masterkey.html";
+
+  else {
+    console.log("not logged in");
+  }
+ });
+
+
+   }
+
+
+
+   function initApp() {
+     document.getElementById('quickstart-sign-up').addEventListener('click', handleSignUp, false);
+   }
+
+   window.onload = function() {
+     initApp();
+   };
+
+ </script>
+
+
+</head>
+<body>
+  <nav class="navbar navbar-toggleable-md navbar-light fixed-top py-4 navbar-inverse">
+    <div class="container">
+      <button class="navbar-toggler navbar-toggler-right" ><span class="navbar-toggler-icon"
+        data-toggle="collapse" data-target="#navbarNav"></span></button>
+      <a href="index.html" class="navbar-brand">
+        <img src="img/logo.png" height="50" alt="">
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#about" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="text-warning nav-link">Contact</a>
+          </li>
+          <li class="nav-item">
+
+          <a href="login.html" class="btn blue btn-primary" >Log In</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<center>
+  <div class="col-md-4">
+              <div class="card card-primary card-form text-center">
+                <div class="card-block">
+                  <h3>Sign Up Today</h3>
+                  <p>Please fill out this form to register</p>
+
+
+                    <div class="form-group">
+                      <input type="email" name="email" id="email"  class="form-control form-control-lg" required placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" name="password" id="password"  class="form-control form-control-lg" required placeholder="Password">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" name="password2" id="password2"  class="form-control form-control-lg" required placeholder="Confirm Password">
+                    </div>
+
+
+                    <button id="quickstart-sign-up" class="btn btn-outline-secondary btn-block"><b>Sign Up</b></button>
+
+                </div>
+              </div>
+  </div>
+</center>
+
+<footer id="main-footer" class="bg-inverse text-white mt-5 p-3 fixed-bottom">
+   <div class="container">
+     <div class="row">
+       <div class="col">
+         <p class="lead text-center">Copyright &copy; 2017 Bhuwnesh & Harsh</p>
+       </div>
+     </div>
+   </div>
+ </footer>
+
+
+
+
+</body>
+</html>

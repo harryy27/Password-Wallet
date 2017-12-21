@@ -1,0 +1,21 @@
+
+{
+  "name": "Password Wallet",
+  "version": "1.0",
+  "manifest_version": 2,
+
+  "description": "This chrome extension fills out forms automatically.",
+  "icons": {},
+  "content_scripts": [
+    {
+      "matches" : [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": ["jquery-1.8.2.min.js", "run.js", "firebase.js", "firebase-app.js", "firebase-auth.js", "firebase-database.js"],
+      "run_at": "document_end" 
+    }
+  ],
+  "options_page": "options.html",
+  "background": { "page": "background.html" }
+}

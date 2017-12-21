@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Password Wallet|Home</title>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase-database.js"></script>
+ <script>
+   // Initialize Firebase
+   var config = {
+     apiKey: "AIzaSyBc7zeNZjvJTBirL0km3zkvBIDXjGOzSYk",
+     authDomain: "password-wallet-aut017.firebaseapp.com",
+     databaseURL: "https://password-wallet-aut017.firebaseio.com",
+     projectId: "password-wallet-aut017",
+     storageBucket: "password-wallet-aut017.appspot.com",
+     messagingSenderId: "15909908096"
+   };
+   firebase.initializeApp(config);
+
+   firebase.auth().onAuthStateChanged(function(user) {
+     if(!user)
+     window.location.href="login.html";
+     else {
+       console.log("signed in");
+     }
+   });
+
+   function handleLogOut() {
+
+     firebase.auth().signOut();
+
+
+
+ firebase.auth().onAuthStateChanged(user =>{
+  if(!user)
+  window.location="index.html";
+
+  else {
+    console.log("logged in");
+  }
+ });
+
+
+   }
+
+  function add_entry() {
+    document.getElementById('sitename').style.display="inline";
+     document.getElementById('url').style.display="inline";
+     document.getElementById('password').style.display="inline";
+     document.getElementById('add').style.display="inline";
+     document.getElementById('username').style.display="inline";
+     document.getElementById('add-entry').style.display="none";
+
+   }
+
+   function handleAddEntry() {
+     var sitename = document.getElementById("sitename").value;
+     var url = document.getElementById("url").value;
+     var password = document.getElementById("password").value;
+     var username = document.getElementById("username").value;
+     if(url.length==0)
+     {
+       alert("URL field can't be empty");
+       return;
+     }
+     if(password.length==0)
+     {
+       alert("Password field can't be empty");
+       return;
+     }
+     var usrId = firebase.auth().currentUser.uid;
+     var loc = firebase.database().ref().child('Users/'+usrId).child("data");
+     loc.push({
+       sitename: sitename,
+       password: password,
+       username: username,
+       url: url
+     });
+     document.getElementById('sitename').style.display="none";
+     document.getElementById('url').style.display="none";
+     document.getElementById('password').style.display="none";
+     document.getElementById('add').style.display="none";
+     document.getElementById('username').style.display="none";
+     document.getElementById('add-entry').style.display="inline";
+     $("#data").append("<tr><td>" + sitename + "</td><td>"  + url + "</td><td> " + username + "</td><td>" + password + "</td></tr>")
+
+     document.getElementById('sitename').value="";
+     document.getElementById('url').value="";
+     document.getElementById('password').value="";
+     document.getElementById('username').value="";
+   }
+
+   function initApp() {
+
+     document.getElementById('logout').addEventListener('click', handleLogOut, false);
+     document.getElementById('add-entry').addEventListener('click', add_entry, false );
+     document.getElementById('add').addEventListener('click', handleAddEntry, false);
+
+
+   }
+
+   function displayDetails()
+   {
+
+//   var user = firebase.auth().currentUser;
+   var usrId;
+
+   firebase.auth().onAuthStateChanged(function(user) {
+  usrId = user.uid;
+  console.log(usrId);
+  var userDataRef = firebase.database().ref("Users/" + usrId + "/data").orderByKey();
+
+  userDataRef.once("value",function(snapshot) {
+
+  snapshot.forEach(function(childSnapshot) {
+
+    var key = childSnapshot.key;
+    var childData = childSnapshot.val();
+    var sitename = childSnapshot.val().sitename;
+    var password_val = childSnapshot.val().password;
+    var url_val = childSnapshot.val().url;
+    var username_val = childSnapshot.val().username;
+
+
+  $("#data").append("<tr><td>" + sitename + "</td><td>" + url_val + "</td><td> " + username_val + "</td><td>" + password_val + "</td></tr>");
+
+
+    });
+  });
+});
+
+
+   }
+
+   window.onload = function() {
+     initApp();
+     displayDetails();
+   };
+ </script>
+ <script src="js/jquery.min.js"></script>
+ <script src="js/tether.min.js"></script>
+ <script src="js/bootstrap.min.js"></script>
+ <script src="js/navbar-fixed.js"></script>
+</head>
+<body id="home">
+  <nav class="navbar navbar-toggleable-md navbar-light fixed-top py-4 navbar-inverse">
+    <div class="container">
+      <button class="navbar-toggler navbar-toggler-right" ><span class="navbar-toggler-icon"
+        data-toggle="collapse" data-target="#navbarNav"></span></button>
+      <a href="index.html" class="navbar-brand">
+        <img src="img/logo.png" height="50" alt="">
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a href="index.html" class="nav-link">Home</a>
+          </li>
+          <li class="nav-item">
+            <a href="#about" class="nav-link">About</a>
+          </li>
+          <li class="nav-item">
+            <a href="contact.html" class="text-warning nav-link">Contact</a>
+          </li>
+          <li class="nav-item">
+
+          <a id="logout" class="btn blue btn-primary" >Log Out</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<center>
+<div class="container">
+  <button id="add-entry" class="btn btn-primary add-entry" style="display:block">Add Entry</button>
+  <div class=" add-entry">
+  <input type="text" id="sitename" placeholder="Website" style="display:none">
+  <input type="text" id="url" placeholder="URL" style="display:none">
+  <input type="text" id="username" placeholder="Username" style="display:none">
+  <input type="text" id="password" placeholder="Password" style="display:none">
+  <button id="add" class="btn btn-primary" style="display:none">Add</button>
+</div>
+</div>
+</center>
+<div class="container" >
+
+  <table class="table table-bordered table-striped table-hover" id="data">
+    <tr>
+      <th>Website</th>
+      <th>URL</th>
+      <th>User Name</th>
+      <th>Password</th>
+    </tr>
+
+
+  </table>
+
+
+</div>
+  <footer id="main-footer" class="bg-inverse text-white mt-5 p-3 ">
+   <div class="container">
+     <div class="row">
+       <div class="col">
+         <p class="lead text-center">Copyright &copy; 2017 Bhuwnesh & Harsh</p>
+       </div>
+     </div>
+   </div>
+ </footer>
+
+
+
+</body>
+</html>
